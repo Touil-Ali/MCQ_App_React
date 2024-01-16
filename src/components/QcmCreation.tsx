@@ -1,73 +1,98 @@
-import React, { useState, useEffect } from 'react';
-import { Button, TextField } from '@mui/material'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { Dayjs } from 'dayjs';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import React, { useState, useEffect } from "react";
+import { redirect } from "react-router-dom";
+import { Button, TextField } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { Dayjs } from "dayjs";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const QcmCreation: React.FC = () => {
-  const [qcmTitle, setQcmTitle] = useState('')
+  const [qcmId, setQcmId] = useState("");
+  const [qcmTitle, setQcmTitle] = useState("");
   const [qcmStartDate, setQcmStartDate] = React.useState<Dayjs | null>(null);
   const [qcmEndDate, setQcmEndDate] = React.useState<Dayjs | null>(null);
-  const [classRoom, setClassRoom] = React.useState('');
-  const [classList, setClassList] = React.useState<{ id: number; className: string }[]>([]);
+  const [classRoom, setClassRoom] = React.useState("");
+  const [classList, setClassList] = React.useState<
+    { id: number; className: string }[]
+  >([]);
   const handleChangeSelect = (event: SelectChangeEvent) => {
     setClassRoom(event.target.value);
   };
   useEffect(() => {
-    fetch('http://localhost:8080/classes/all')
+    fetch("http://localhost:8080/classes/all")
       .then((response) => response.json())
       .then((data) => setClassList(data))
-      .catch((error) => console.error('Error Fetching classes', error))
-  })
+      .catch((error) => console.error("Error Fetching classes", error));
+  });
   const handleCeationQcm = async () => {
     const qcmData = {
+      qcm: qcmId,
       title: qcmTitle,
       startTime: qcmStartDate?.toISOString(),
       endTime: qcmEndDate?.toISOString(),
       myClass: {
-        id: Number(classRoom)
-      }
+        id: Number(classRoom),
+      },
     };
     try {
-      const response = await fetch('http://localhost:8080/qcms/create', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8080/qcms/create", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(qcmData)
+        body: JSON.stringify(qcmData),
       });
       if (response.ok) {
-        console.log('Qcm Created successfully !')
+        console.log(response);
+        console.log("Qcm Created successfully !");
+        window.location.href = `question-creation/${qcmId}`;
       } else {
-        console.error('Failed to create QCM', await response.text());
+        console.error("Failed to create QCM", await response.text());
       }
     } catch (error) {
-      console.error('Error Creating QCM ', error)
+      console.error("Error Creating QCM ", error);
     }
-  }
-
-
+  };
 
   return (
     <div className="flex flex-col items-center gap-4">
       <h2>Create Qcm</h2>
-      <TextField id="outlined-basic" label="Title" type="text" value={qcmTitle} onChange={(e) => setQcmTitle(e.target.value)} />
+      <TextField
+        id="outlined-basic"
+        label="Qcm Id"
+        type="text"
+        value={qcmId}
+        onChange={(e) => setQcmId(e.target.value)}
+      />
+
+      <TextField
+        id="outlined-basic"
+        label="Title"
+        type="text"
+        value={qcmTitle}
+        onChange={(e) => setQcmTitle(e.target.value)}
+      />
       <span>Start Date</span>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DemoContainer components={['DatePicker']}>
-          <DatePicker value={qcmStartDate} onChange={(newValue) => setQcmStartDate(newValue)} />
+        <DemoContainer components={["DatePicker"]}>
+          <DatePicker
+            value={qcmStartDate}
+            onChange={(newValue) => setQcmStartDate(newValue)}
+          />
         </DemoContainer>
       </LocalizationProvider>
       <span>End Date</span>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DemoContainer components={['DatePicker']}>
-          <DatePicker value={qcmEndDate} onChange={(newValue) => setQcmEndDate(newValue)} />
+        <DemoContainer components={["DatePicker"]}>
+          <DatePicker
+            value={qcmEndDate}
+            onChange={(newValue) => setQcmEndDate(newValue)}
+          />
         </DemoContainer>
       </LocalizationProvider>
       <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
@@ -89,12 +114,16 @@ const QcmCreation: React.FC = () => {
           ))}
         </Select>
       </FormControl>
-      <Button variant="contained" color="success" size="medium" onClick={handleCeationQcm}>Create Qcm</Button>
-
-    </div >
-  )
-
-}
-
+      <Button
+        variant="contained"
+        color="success"
+        size="medium"
+        onClick={handleCeationQcm}
+      >
+        Create Qcm
+      </Button>
+    </div>
+  );
+};
 
 export default QcmCreation;

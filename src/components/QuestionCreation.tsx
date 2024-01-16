@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { Button, TextField } from '@mui/material'
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useParams } from 'react-router-dom';
 
 
 interface SubQuestion {
@@ -16,6 +13,9 @@ interface Question {
   subQuestions: SubQuestion[];
 }
 const QuesitonCreation: React.FC = () => {
+
+      let { qcmId } = useParams()
+  console.log('qcm id', qcmId)
   const [questions, setQuestions] = useState<Question[]>([{ title: '', subQuestions: [] }]);
 
   const handleAddQuestion = () => {
@@ -63,7 +63,6 @@ const QuesitonCreation: React.FC = () => {
   };
   const handleCreationQcm = async () => {
     try {
-      const qcmId = 6;
 
       for (const question of questions) {
         const qcmData = {
