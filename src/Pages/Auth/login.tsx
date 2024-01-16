@@ -1,4 +1,5 @@
 import React from "react";
+import { TextField, Button } from "@mui/material";
 
 const login: React.FC = () => {
   return (
@@ -14,44 +15,43 @@ const login: React.FC = () => {
           </h2>
 
           <form className="mt-10" method="POST">
-            <label className="block text-xs font-semibold text-gray-600 uppercase">
-              E-mail
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="e-mail address"
-              className="block w-full py-3 px-1 mt-2 
+            <div>
+              <TextField
+                label="Email"
+                id="email"
+                type="email"
+                name="email"
+                className="block w-full py-3 px-1 mt-2 
                     text-gray-800 appearance-none 
                     border-b-2 border-gray-100
                     focus:text-gray-500 focus:outline-none focus:border-gray-200"
-              required
-            />
-
-            <label className="block mt-2 text-xs font-semibold text-gray-600 uppercase">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="password"
-              className="block w-full py-3 px-1 mt-2 mb-4
+                required
+              />
+            </div>
+            <div className="mt-10">
+              <TextField
+                label="Password"
+                id="password"
+                type="password"
+                name="password"
+                className="block mt-10 w-full py-3 px-1  mb-4
                     text-gray-800 appearance-none 
                     border-b-2 border-gray-100
                     focus:text-gray-500 focus:outline-none focus:border-gray-200"
-              required
-            />
-
-            <button
-              type="submit"
-              className="w-full py-3 mt-10 bg-gray-800 rounded-sm
+                required
+              />
+            </div>
+            <div className="mt-10">
+              <Button
+                variant="contained"
+                type="submit"
+                className="w-full py-3 mt-10 bg-gray-800 rounded-sm
                     font-medium text-white uppercase
                     focus:outline-none hover:bg-gray-700 hover:shadow-none"
-            >
-              Login
-            </button>
+              >
+                Login
+              </Button>
+            </div>
           </form>
         </div>
       </div>
