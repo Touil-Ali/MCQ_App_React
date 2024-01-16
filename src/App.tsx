@@ -9,13 +9,13 @@ import QuestionCreation from "./components/QuestionCreation";
 import QcmQuestionnaire from "./components/QcmQuestionnaire";
 import QcmList from "./components/QcmList";
 import Teacher from "./Pages/Teacher";
-import LoginTeacher from "./Pages/Auth/loginTeacher";
+import Login from "./Pages/Auth/login";
 const App: React.FC = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/teacher/login" element={<LoginTeacher />} />
+          <Route path="/teacher/login" element={<Login />} />
           <Route path="/teacher/*" element={<Teacher />} />
           <Route path="/qcm-questionnaire/:id" element={<QcmQuestionnaire />} />
           <Route path="/qcm-questionnaire" element={<QcmList />} />

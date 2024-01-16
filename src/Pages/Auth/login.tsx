@@ -1,6 +1,6 @@
 import React from "react";
 
-const loginTeacher: React.FC = () => {
+const login: React.FC = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       <div className="grid place-items-center mx-2 my-20 sm:my-auto">
@@ -59,4 +59,4 @@ const loginTeacher: React.FC = () => {
   );
 };
 
-export default loginTeacher;
+export default login;
