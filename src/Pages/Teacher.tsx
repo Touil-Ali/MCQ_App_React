@@ -9,7 +9,7 @@ const Teacher: React.FC = () => {
       <Routes>
         <Route path="/qcm-creation" element={<QcmCreation />} />
         <Route
-          path="/question-creation/:qcmId"
+          path="/qcm-creation/question-creation/:qcmId"
           element={<QuestionCreation />}
         />
       </Routes>

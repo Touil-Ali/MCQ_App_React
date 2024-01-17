@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -11,7 +11,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
+import Alert, { AlertColor } from "@mui/material/Alert";
+
 const QcmCreation: React.FC = () => {
+  const navigate = useNavigate();
   const [qcmId, setQcmId] = useState("");
   const [qcmTitle, setQcmTitle] = useState("");
   const [qcmStartDate, setQcmStartDate] = React.useState<Dayjs | null>(null);
@@ -20,6 +23,12 @@ const QcmCreation: React.FC = () => {
   const [classList, setClassList] = React.useState<
     { id: number; className: string }[]
   >([]);
+
+  const [alert, setAlert] = useState<{
+    type: AlertColor | null;
+    message: string | null;
+  }>({ type: null, message: null });
+
   const handleChangeSelect = (event: SelectChangeEvent) => {
     setClassRoom(event.target.value);
   };
@@ -30,8 +39,13 @@ const QcmCreation: React.FC = () => {
       .catch((error) => console.error("Error Fetching classes", error));
   });
   const handleCeationQcm = async () => {
+    if (!qcmId || !qcmTitle || !qcmStartDate || !qcmEndDate || !classRoom) {
+      setAlert({ type: "error", message: "All fields are required." });
+      return;
+    }
+
     const qcmData = {
-      qcm: qcmId,
+      id: qcmId,
       title: qcmTitle,
       startTime: qcmStartDate?.toISOString(),
       endTime: qcmEndDate?.toISOString(),
@@ -50,7 +64,7 @@ const QcmCreation: React.FC = () => {
       if (response.ok) {
         console.log(response);
         console.log("Qcm Created successfully !");
-        window.location.href = `question-creation/${qcmId}`;
+        navigate(`question-creation/${qcmId}`);
       } else {
         console.error("Failed to create QCM", await response.text());
       }
@@ -59,9 +73,18 @@ const QcmCreation: React.FC = () => {
     }
   };
 
+  const handleCloseAlert = () => {
+    setAlert({ type: "success", message: null });
+  };
+
   return (
     <div className="flex flex-col items-center gap-4">
       <h2>Create Qcm</h2>
+      {alert.type && (
+        <Alert severity={alert.type} onClose={handleCloseAlert}>
+          {alert.message}
+        </Alert>
+      )}
       <TextField
         id="outlined-basic"
         label="Qcm Id"
