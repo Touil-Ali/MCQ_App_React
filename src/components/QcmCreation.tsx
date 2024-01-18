@@ -14,6 +14,9 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Alert, { AlertColor } from "@mui/material/Alert";
 
 const QcmCreation: React.FC = () => {
+  const getToken = (): string | null => {
+    return localStorage.getItem("authToken");
+  };
   const navigate = useNavigate();
   const [qcmId, setQcmId] = useState("");
   const [qcmTitle, setQcmTitle] = useState("");
@@ -21,7 +24,7 @@ const QcmCreation: React.FC = () => {
   const [qcmEndDate, setQcmEndDate] = React.useState<Dayjs | null>(null);
   const [classRoom, setClassRoom] = React.useState("");
   const [classList, setClassList] = React.useState<
-    { id: number; className: string }[]
+    { _id: number; className: string }[]
   >([]);
 
   const [alert, setAlert] = useState<{
@@ -45,15 +48,15 @@ const QcmCreation: React.FC = () => {
     }
 
     const qcmData = {
-      id: qcmId,
+      _id: qcmId,
       title: qcmTitle,
       startTime: qcmStartDate?.toISOString(),
       endTime: qcmEndDate?.toISOString(),
-      myClass: {
-        id: Number(classRoom),
-      },
+      classRoom,
     };
     try {
+      console.log("qcmData", qcmData);
+
       const response = await fetch("http://localhost:8080/qcms/create", {
         method: "POST",
         headers: {
@@ -131,7 +134,7 @@ const QcmCreation: React.FC = () => {
             <em>None</em>
           </MenuItem>
           {classList.map((classItem) => (
-            <MenuItem key={classItem.id} value={classItem.id}>
+            <MenuItem key={classItem._id} value={classItem._id}>
               {classItem.className}
             </MenuItem>
           ))}

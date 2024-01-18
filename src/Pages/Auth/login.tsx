@@ -30,6 +30,9 @@ const Login: React.FC = () => {
       if (response.ok) {
         const token = await response.text();
         setAuth(token, username);
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("username", username);
+        console.log(localStorage);
         setAlert({ type: "success", message: "Login successful" });
 
         navigate("/teacher");

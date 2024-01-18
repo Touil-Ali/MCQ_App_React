@@ -6,10 +6,10 @@ type Props = {
 const Layout = ({ children }: Props) => {
   const { authState } = useAuth();
   return (
-    <div className="w-68 h-full ">
+    <div className="w-68 h-full  ">
       <nav
         id="sidenav-1"
-        className="absolute left-0 top-0 z-[1035] h-full w-60 -translate-x-full overflow-hidden bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] data-[te-sidenav-hidden='false']:translate-x-0 dark:bg-zinc-800"
+        className="absolute hidden sm:block left-0 top-0 z-[1035] h-full w-60 -translate-x-full overflow-hidden bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] data-[te-sidenav-hidden='false']:translate-x-0 dark:bg-zinc-800"
         data-te-sidenav-init
         data-te-sidenav-hidden="false"
         data-te-sidenav-position="absolute"
@@ -17,13 +17,8 @@ const Layout = ({ children }: Props) => {
         <Link to="/teacher">
           <img className="w-24 mt-5 ml-16" src="img/logo.png" alt="logo" />
         </Link>
-        <div className="mt-4">
-          <h1 className="text-orange-500 outline-none transition duration-300 ease-linear hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none ">
-            {authState.username}
-          </h1>
-        </div>
         <ul
-          className="relative m-0 list-none px-[0.2rem]"
+          className="relative m-0  mt-5 list-none px-[0.2rem]"
           data-te-sidenav-menu-ref
         >
           <li className="relative">
@@ -71,7 +66,7 @@ const Layout = ({ children }: Props) => {
                   />
                 </svg>
               </span>
-              <Link to="qcm-creation">Classes</Link>
+              <Link to="class">Classes</Link>
             </a>
           </li>
         </ul>
