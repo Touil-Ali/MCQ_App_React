@@ -4,7 +4,10 @@ type Props = {
   children: JSX.Element;
 };
 const Layout = ({ children }: Props) => {
-  const { authState } = useAuth();
+  const { logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <div className="w-68 h-full  ">
       <nav
@@ -67,6 +70,33 @@ const Layout = ({ children }: Props) => {
                 </svg>
               </span>
               <Link to="class">Classes</Link>
+            </a>
+          </li>
+          <li className="relative">
+            <a
+              className="flex h-12 cursor-pointer items-center truncate rounded-[5px] px-6 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-slate-50 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
+              data-te-sidenav-link-ref
+              onClick={handleLogout}
+            >
+              <span className="mr-4 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-gray-400 dark:[&>svg]:text-gray-300">
+                <svg
+                  className="w-6 h-6 text-gray-800 dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 18 15"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M1 7.5h11m0 0L8 3.786M12 7.5l-4 3.714M12 1h3c.53 0 1.04.196 1.414.544.375.348.586.82.586 1.313v9.286c0 .492-.21.965-.586 1.313A2.081 2.081 0 0 1 15 14h-3"
+                  />
+                </svg>
+              </span>
+
+              <button>Logout</button>
             </a>
           </li>
         </ul>

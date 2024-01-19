@@ -30,6 +30,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       token: null,
       username: null,
     });
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("username");
+    console.log("clicked");
+    window.location.href = "/login";
   };
 
   return (

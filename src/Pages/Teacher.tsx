@@ -2,12 +2,14 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import QcmCreation from "../components/QcmCreation";
 import QuestionCreation from "../components/QuestionCreation";
+import WelcomeDashboard from "../components/welcomeDashboard";
 import Layout from "../layouts/TeacherLayout/layout";
 import Class from "../components/Class";
 const Teacher: React.FC = () => {
   return (
     <Layout>
       <Routes>
+        <Route path="/" element={<WelcomeDashboard />} />
         <Route path="/qcm-creation" element={<QcmCreation />} />
         <Route
           path="/qcm-creation/question-creation/:qcmId"

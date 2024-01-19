@@ -36,10 +36,32 @@ const QcmCreation: React.FC = () => {
     setClassRoom(event.target.value);
   };
   useEffect(() => {
-    fetch("http://localhost:8080/classes/all")
-      .then((response) => response.json())
-      .then((data) => setClassList(data))
-      .catch((error) => console.error("Error Fetching classes", error));
+    const fetchData = async () => {
+      try {
+        const token = getToken();
+
+        const response = await fetch("http://localhost:8080/classes/all", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // Process the retrieved data
+          setClassList(data);
+        } else {
+          // Handle error
+          console.error("Failed to fetch classes");
+        }
+      } catch (error) {
+        console.error("Error fetching classes:", error);
+      }
+    };
+
+    fetchData();
   });
   const handleCeationQcm = async () => {
     if (!qcmId || !qcmTitle || !qcmStartDate || !qcmEndDate || !classRoom) {
@@ -81,7 +103,7 @@ const QcmCreation: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex mt-6 flex-col items-center gap-4">
       <h2>Create Qcm</h2>
       {alert.type && (
         <Alert severity={alert.type} onClose={handleCloseAlert}>

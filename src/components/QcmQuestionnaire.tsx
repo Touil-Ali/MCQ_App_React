@@ -10,6 +10,7 @@ const QcmQuestionnaire: React.FC = () => {
   const [score, setScore] = useState<number | null>(null);
 
   const { id } = useParams<{ id: string }>();
+  console.log(id);
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
