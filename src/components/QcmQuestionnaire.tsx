@@ -2,15 +2,25 @@ import React, { useEffect, useState } from "react";
 import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import { useParams } from "react-router-dom";
 
+import Alert, { AlertColor } from "@mui/material/Alert";
+
 const QcmQuestionnaire: React.FC = () => {
+  const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
   const [questions, setQuestions] = useState<any[]>([]);
   const [answers, setAnswers] = useState<number[]>(
     new Array(questions.length).fill(-1),
   );
   const [score, setScore] = useState<number | null>(null);
+  const [alert, setAlert] = useState<{
+    type: AlertColor | null;
+    message: string | null;
+  }>({ type: null, message: null });
 
-  const { id } = useParams<{ id: string }>();
-  console.log(id);
+  const { id } = useParams<{ id?: string }>();
+  const studentId = new URLSearchParams(window.location.search).get(
+    "studentId",
+  );
+  const qcmId = parseInt(id!);
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -56,14 +66,50 @@ const QcmQuestionnaire: React.FC = () => {
       }
     }
 
+    console.log(totalScore);
     setScore(totalScore);
   };
 
-  const submitQcmResult = async () => {};
+  const submitQcmResult = async () => {
+    if (!isButtonClicked) {
+      try {
+        calculateScore();
+        if (!studentId || score === null) {
+          console.error("Invalide studentId or score");
+          return;
+        }
+        const response = await fetch("http://localhost:8080/results/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            qcmId: qcmId,
+            studentId,
+            score,
+          }),
+        });
+        if (response.ok) {
+          setIsButtonClicked(true);
+          console.log("Qcm Result Submitted successfully");
+        } else {
+          console.error("Failed to submit QCM  result");
+        }
+      } catch (error) {
+        console.error("Error occured while submitting QCM result", error);
+      }
+    } else {
+      setAlert({
+        type: "error",
+        message: "You Have Already Submitted",
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col items-center gap-6">
       <h2>QCM Questions</h2>
+      {alert.type && <Alert severity={alert.type}>{alert.message}</Alert>}
       {questions.map((question, questionIndex) => (
         <div key={question.id}>
           <h3>{question.text}</h3>
@@ -90,17 +136,11 @@ const QcmQuestionnaire: React.FC = () => {
           )}
         </div>
       ))}
-      <Button variant="contained" onClick={calculateScore}>
-        Calculate Score
-      </Button>
-      {score !== null && (
-        <div>
-          <h3>Your Score: {score}</h3>
-          <Button variant="contained" onClick={submitQcmResult}>
-            Submit Result
-          </Button>
-        </div>
-      )}
+      <div>
+        <Button variant="contained" onClick={submitQcmResult}>
+          Submit Result
+        </Button>
+      </div>
     </div>
   );
 };

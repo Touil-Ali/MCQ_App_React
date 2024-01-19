@@ -5,6 +5,9 @@ import QuestionCreation from "../components/QuestionCreation";
 import WelcomeDashboard from "../components/welcomeDashboard";
 import Layout from "../layouts/TeacherLayout/layout";
 import Class from "../components/Class";
+import Student from "../components/Student";
+import QcmDashboard from "../components/QcmDashboard";
+import QcmResult from "../components/QcmResult";
 const Teacher: React.FC = () => {
   return (
     <Layout>
@@ -16,6 +19,9 @@ const Teacher: React.FC = () => {
           element={<QuestionCreation />}
         />
         <Route path="/class" element={<Class />} />
+        <Route path="/student" element={<Student />} />
+        <Route path="/Qcms" element={<QcmDashboard />} />
+        <Route path="/QcmResult" element={<QcmResult />} />
       </Routes>
     </Layout>
   );

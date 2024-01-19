@@ -81,6 +81,8 @@ const QcmList: React.FC = () => {
       <Grid container spacing={2}>
         {isLoading ? (
           <Typography>Loading...</Typography>
+        ) : qcms.length === 0 ? (
+          <Typography>No Qcms Available .</Typography>
         ) : (
           qcms.map((qcm) => (
             <Grid item key={qcm._id} xs={12} sm={6} md={4}>
@@ -120,7 +122,7 @@ const QcmList: React.FC = () => {
                 <CardActions>
                   <Button
                     component={RouterLink}
-                    to={`/qcm-questionnaire/${qcm._id}`}
+                    to={`/qcm-questionnaire/${qcm._id}?studentId=${studentId}`}
                     size="small"
                   >
                     Start

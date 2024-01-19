@@ -10,7 +10,9 @@ import {
   Paper,
   Button,
   TextField,
+  Typography,
 } from "@mui/material";
+import { Container } from "@mui/system";
 const Class: React.FC = () => {
   const [myClasses, setMyClasses] = useState<any[]>([]);
   const [newClassName, setNewClassName] = useState<string>("");
@@ -69,55 +71,63 @@ const Class: React.FC = () => {
         method: "DELETE",
       });
 
-      setMyClasses(myClasses.filter((c) => c.id !== id));
+      setMyClasses((prevClass) => prevClass.filter((c) => c.id !== id));
     } catch (error) {
       console.error("Error deleting class:", error);
     }
   };
   return (
     <div className="ml-60">
-      <h2>Class Management</h2>
-      {alert.type && <Alert severity={alert.type}>{alert.message}</Alert>}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Class ID</TableCell>
-              <TableCell>Class Name</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {myClasses.map((myClass) => (
-              <TableRow key={myClass._id}>
-                <TableCell>{myClass._id}</TableCell>
-                <TableCell>{myClass.className}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => deleteMyClass(myClass.id)}
-                  >
-                    Remove
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Container maxWidth="md" className="mt-8">
+        <Typography variant="h4">Class Management</Typography>
+        {alert.type && <Alert severity={alert.type}>{alert.message}</Alert>}
 
-      <div>
-        <TextField
-          label="New Class Name"
-          variant="outlined"
-          value={newClassName}
-          onChange={(e) => setNewClassName(e.target.value)}
-        />
-        <Button variant="contained" color="primary" onClick={createMyClass}>
-          Add Class
-        </Button>
-      </div>
+        <TableContainer component={Paper} className="mt-4">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Class ID</TableCell>
+                <TableCell>Class Name</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {myClasses.map((myClass) => (
+                <TableRow key={myClass._id}>
+                  <TableCell>{myClass._id}</TableCell>
+                  <TableCell>{myClass.className}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => deleteMyClass(myClass._id)}
+                    >
+                      Remove
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <div className="mt-4">
+          <TextField
+            label="New Class Name"
+            variant="outlined"
+            value={newClassName}
+            onChange={(e) => setNewClassName(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={createMyClass}
+            className="ml-2"
+          >
+            Add Class
+          </Button>
+        </div>
+      </Container>
     </div>
   );
 };

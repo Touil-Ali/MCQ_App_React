@@ -74,7 +74,7 @@ const QcmCreation: React.FC = () => {
       title: qcmTitle,
       startTime: qcmStartDate?.toISOString(),
       endTime: qcmEndDate?.toISOString(),
-      classRoom,
+      myClassId: classRoom,
     };
     try {
       console.log("qcmData", qcmData);
